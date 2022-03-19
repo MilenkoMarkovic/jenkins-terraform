@@ -1,9 +1,9 @@
 terraform {
   cloud {
-    organization = "LUIT-Green-Team"
+    organization = "Your-Organization-Name"
 
     workspaces {
-      name = "project-test"
+      name = "Your-Workspace-Name"
     }
   }
 }
