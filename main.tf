@@ -32,16 +32,6 @@ resource "aws_instance" "web" {
     Name = "docker-instance"
   }
 
-  # provisioner "local-exec" {
-  #   command = "printf '\n${self.public_ip}' >> aws_hosts" # &&  aws ec2 wait instance-status-ok --instance-ids ${self.id} --region us-east-1
-  # }
-
-  # provisioner "local-exec" {
-  #   when    = destroy
-  #   command = "sed -i '/^[0-9]/d' aws_hosts"
-  # }
-}
-
 resource "aws_vpc" "vpc" {
   cidr_block           = var.vpc_cidr
   enable_dns_hostnames = true
@@ -120,12 +110,6 @@ resource "aws_route_table_association" "public_assoc" {
   route_table_id = aws_route_table.public_rt.id
 }
 
-# resource "null_resource" "docker_install" {
-#   depends_on = [aws_instance.web]
-#   provisioner "local-exec" {
-#     command = "ansible-playbook -i aws_hosts --key-file /home/ubuntu/.ssh/wpkey playbooks/docker.yml"
-#   }
-# }
 
 output "docker_access" {
   value = { for i in aws_instance.web[*] : i.tags.Name => "${i.public_ip}" }
